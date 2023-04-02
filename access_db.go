@@ -41,7 +41,7 @@ func updateItemMaster(db *gorm.DB) error {
 	return db.Transaction(func(tx *gorm.DB) error {
 		// Insert
 		var newItems []LatestItem
-		err := tx.Unscoped().Joins("left join item_master on latest_items.url = item_master.url").Where("item_master.name is null").Find(&newItems).Error
+		err := tx.Unscoped().Joins("LEFT JOIN item_master ON latest_items.url = item_master.url").Where("item_master.name IS NULL").Find(&newItems).Error
 		if err != nil {
 			return fmt.Errorf("extract for bulk insert to item_master error: %w", err)
 		}
@@ -58,7 +58,7 @@ func updateItemMaster(db *gorm.DB) error {
 
 		// Update
 		var updatedItems []LatestItem
-		err = tx.Unscoped().Joins("inner join item_master on latest_items.url = item_master.url").Where("latest_items.name <> item_master.name or latest_items.price <> item_master.price or item_master.deleted_at is not null").Find(&updatedItems).Error
+		err = tx.Unscoped().Joins("INNER JOIN item_master ON latest_items.url = item_master.url").Where("latest_items.name <> item_master.name OR latest_items.price <> item_master.price OR item_master.deleted_at IS NOT NULL").Find(&updatedItems).Error
 		if err != nil {
 			return fmt.Errorf("update error: %w", err)
 		}
@@ -72,7 +72,7 @@ func updateItemMaster(db *gorm.DB) error {
 
 		// Delete
 		var deletedItems []ItemMaster
-		if err := tx.Where("not exists(select 1 from latest_items li where li.url = item_master.url)").Find(&deletedItems).Error; err != nil {
+		if err := tx.Where("NOT EXISTS(SELECT 1 FROM latest_items li WHERE li.url = item_master.url)").Find(&deletedItems).Error; err != nil {
 			return fmt.Errorf("delete error: %w", err)
 		}
 		var ids []uint
