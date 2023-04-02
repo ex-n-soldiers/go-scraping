@@ -8,9 +8,9 @@ import (
 )
 
 type Item struct {
-	Name  string `gorm:"not null"`
+	Name  string `gorm:"type:varchar(100);not null"`
 	Price int
-	URL   string `gorm:"unique_index"`
+	URL   string `gorm:"type:varchar(100);uniqueIndex"`
 }
 
 type LatestItem struct {
@@ -30,6 +30,7 @@ type ItemMaster struct {
 	PdfDownloadPath     string
 }
 
+// テーブル名がitem_mastersになるのを防ぐため
 func (ItemMaster) TableName() string {
 	return "item_master"
 }

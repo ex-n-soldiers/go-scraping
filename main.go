@@ -2,6 +2,9 @@ package main
 
 func main() {
 	conf, err := loadConfig()
+	if err != nil {
+		panic(err)
+	}
 
 	db, err := connectDB(conf)
 	if err != nil {
@@ -40,7 +43,7 @@ func main() {
 		panic(err)
 	}
 
-	if err = createDetails(db, updatedItems); err != nil {
+	if err = createDetails(updatedItems, db); err != nil {
 		panic(err)
 	}
 }

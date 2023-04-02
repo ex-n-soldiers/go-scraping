@@ -7,18 +7,18 @@ import (
 	"path/filepath"
 )
 
-type Config struct {
-	Db
-	BaseURL          string
-	DownloadBasePath string
-}
-
 type Db struct {
 	Host     string
 	DbName   string
 	Port     string
 	User     string
 	Password string
+}
+
+type Config struct {
+	Db
+	BaseURL          string
+	DownloadBasePath string
 }
 
 func loadConfig() (*Config, error) {

@@ -1,4 +1,4 @@
-module github.com/ex-n-soldiers/go-scraper
+module github.com/ex-n-soldiers/go-scraping
 
 go 1.20
 

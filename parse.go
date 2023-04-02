@@ -72,7 +72,9 @@ func parseDetail(response *http.Response, item ItemMaster, downloadBasePath stri
 		if isUpdated {
 			item.ImageURL = imageURL
 			item.ImageLastModifiedAt = currentLastModified
-			imageDownloadPath, err := downloadFile(imageURL, filepath.Join(downloadBasePath, "img", strconv.Itoa(int(item.ID)), item.ImageFileName()))
+
+			imageDownloadPath := filepath.Join(downloadBasePath, "img", strconv.Itoa(int(item.ID)), item.ImageFileName())
+			err := downloadFile(imageURL, imageDownloadPath)
 			if err != nil {
 				return ItemMaster{}, fmt.Errorf("download image error: %w", err)
 			}
@@ -89,7 +91,9 @@ func parseDetail(response *http.Response, item ItemMaster, downloadBasePath stri
 		if isUpdated {
 			item.PdfURL = pdfURL
 			item.PdfLastModifiedAt = currentLastModified
-			pdfDownloadPath, err := downloadFile(pdfURL, filepath.Join(downloadBasePath, "pdf", strconv.Itoa(int(item.ID)), item.PdfFileName()))
+
+			pdfDownloadPath := filepath.Join(downloadBasePath, "pdf", strconv.Itoa(int(item.ID)), item.PdfFileName())
+			err := downloadFile(pdfURL, pdfDownloadPath)
 			if err != nil {
 				return ItemMaster{}, fmt.Errorf("download pdf error: %w", err)
 			}

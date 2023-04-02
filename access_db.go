@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -46,8 +47,9 @@ func updateItemMaster(db *gorm.DB) error {
 		}
 
 		var insertRecords []ItemMaster
+		initDate := time.Date(1900, 1, 1, 0, 0, 0, 0, time.Local)
 		for _, newItem := range newItems {
-			insertRecords = append(insertRecords, ItemMaster{Item: newItem.Item})
+			insertRecords = append(insertRecords, ItemMaster{Item: newItem.Item, ImageLastModifiedAt: initDate, PdfLastModifiedAt: initDate})
 			fmt.Printf("Index item is created: %s\n", newItem.URL)
 		}
 		if err := tx.CreateInBatches(insertRecords, 100).Error; err != nil {
@@ -76,7 +78,7 @@ func updateItemMaster(db *gorm.DB) error {
 		var ids []uint
 		for _, deletedItem := range deletedItems {
 			ids = append(ids, deletedItem.ID)
-			// 動作確認のために、ログを出力 本来はこのforループはなくしてもよい
+			// 動作確認のために、ログを出力
 			fmt.Printf("Index item is deleted: %s\n", deletedItem.URL)
 		}
 		if len(ids) > 0 {
@@ -98,7 +100,7 @@ func findItemMaster(db *gorm.DB) ([]ItemMaster, error) {
 	return items, nil
 }
 
-func createDetails(db *gorm.DB, items []ItemMaster) error {
+func createDetails(items []ItemMaster, db *gorm.DB) error {
 	for _, item := range items {
 		if err := db.Model(&item).Updates(ItemMaster{
 			Description:         item.Description,

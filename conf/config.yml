@@ -1,8 +1,8 @@
 db:
   host: "localhost"
-  dbName: "go_scraper_dev"
+  dbName: "go_scraping_dev"
   port: "3306"
-  user: "user"
+  user: "go-scraping-user"
   password: "password"
 baseURL: "http://localhost:5000/"
 downloadBasePath: "./work/downloadFiles"
